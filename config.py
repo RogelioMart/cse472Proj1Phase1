@@ -14,3 +14,4 @@ BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAAOOdHwEAAAAAHsSW%2FEONGXLg1umXXaiaeRk7etU%3D
 
 # network variables
 NETWORK_MENTIONS_LIST = []  # list of all mentions in the network
+EDGE_LOG_PATH = "edge_file.txt"
