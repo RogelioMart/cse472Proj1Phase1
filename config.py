@@ -1,7 +1,8 @@
 # config.py
 # Global variables and constants
 
-
+  
+ 
 # Twitter API credentials
 API_KEY = "wxlEOzKTqckeTZT6TFZAxynh8" # id that identifies API consumer
 API_KEY_SECRET = "DWozBRNZXGrtiWEDwgvBQzsAJFuGwiwOfxVA7aVXBGq80mKYxf" # password to authenticate API consumer id

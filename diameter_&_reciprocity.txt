@@ -1,0 +1,2 @@
+Diameter: 10
+reciprocity: 0.0
