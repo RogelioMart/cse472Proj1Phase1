@@ -62,11 +62,27 @@ def print_to_file(user_name, mention_name, file_ptr, graph):
     file_ptr.close()
     graph.add_edge(user_name, mention_name)
     
+#checks if the edge_file.txt has been created or not before
+def log_created():
+    
+    try:
+        f = open("edge_file.txt", "r")
+    except FileNotFoundError:
+        f = open("edge_file.txt", "x")
+        f.close()
+        f = open("edge_file.txt", "w")
+        f.write("")
+        f.close()
+    else:
+        f = open("edge_file.txt", "w")
+        f.write("")
+        f.close()
     
 def main():
     
-    file_ptr = open("edge_file.txt", "w")
-    file_ptr.write("")
+    log_created()
+    
+    file_ptr = open("edge_file.txt", "a")
     file_ptr.close()
     
     recursion("HIDEO_KOJIMA_EN", 0, 5, 4, 10, file_ptr, MENTIONS_GRAPH)
@@ -103,7 +119,7 @@ def main():
     print( "\nDiameter(basically the maxiumum eccentricity): "+ str(nx.networkx.algorithms.distance_measures.diameter(MENTIONS_GRAPH)))
 
     #calculates and displays the reciprocity of the graph
-    print("\nreciprocity" + str(nx.overall_reciprocity(MENTIONS_GRAPH)))
+    print("\nreciprocity: " + str(nx.overall_reciprocity(MENTIONS_GRAPH)))
     
     
     
