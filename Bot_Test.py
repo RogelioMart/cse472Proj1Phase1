@@ -20,12 +20,12 @@ BOT_DATASET_CSV_PATH = DIR_PATH + r"\botometer-feedback-2019.tsv"
 # Variables
 df_js = pd.read_json(BOT_DATASET_JSON_PATH)
 df_tsv = pd.read_csv(BOT_DATASET_CSV_PATH, header = None, delim_whitespace = True)
-bot_id_list = []  # list of user IDs belonging to confirmed bots
-test_results_list = []  # list of test results
+#bot_id_list = []  # list of user IDs belonging to confirmed bots
+#test_results_list = []  # list of test results
 
 
 # Set results lists
-def set_bot_results():
+def bot_results():
     results = []
 
     for index, row in df_tsv.iterrows():
@@ -33,16 +33,28 @@ def set_bot_results():
         if row[1] == "bot":
             results.append(row[0])
 
-    bot_id_list = results
+    return results
 
 
-def set_test_results():
+# Returns a list of dict, where the dict is the test results of the ith user
+# Here is a legend for the keys in the dict:
+#   "name"            : contains_name()
+#   "bio"             : contains_bio()
+#   "follower_int"    : followers_count_interval()
+#   "min_tweets"      : minimum_tweets()
+#   "follower_friend" : follower_friend_comparison()
+#   "contains_bot"    : desc_not_contains_str()
+#   "verified"        : is_verified()
+#   "friends_int"     : friends_count_interval()
+#   "default"         : is_default_profile()
+#   "notifications"   : notifications_on()
+def test_results():
     results = []
 
     for index, row in df_js.iterrows():
         results.append(run_tests(row))
 
-    test_results_list = results
+    return results
 
 
 # Run the battery of tests
@@ -175,12 +187,6 @@ def notifications_on(bool):
     return bool
 
 
-# Call this to run tests and get the list of users that are bots
-def run_tests():
-    set_bot_results()
-    set_test_results()
-
-
 ## HEY! Don't use these functions until you call run_tests()!
 # Check if a user is a bot
 def is_bot(id):
@@ -190,19 +196,3 @@ def is_bot(id):
         bool = True
 
     return bool
-
-
-# Returns a list of dict, where the dict is the test results of the ith user
-# Here is a legend for the keys in the dict:
-#   "name"            : contains_name()
-#   "bio"             : contains_bio()
-#   "follower_int"    : followers_count_interval()
-#   "min_tweets"      : minimum_tweets()
-#   "follower_friend" : follower_friend_comparison()
-#   "contains_bot"    : desc_not_contains_str()
-#   "verified"        : is_verified()
-#   "friends_int"     : friends_count_interval()
-#   "default"         : is_default_profile()
-#   "notifications"   : notifications_on()
-def get_test_results():
-    return test_results_list
