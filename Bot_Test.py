@@ -83,7 +83,7 @@ def run_tests(row):
         "friends_int" : friends_count_interval(row["user"]["friends_count"]),
         "default" : is_default_profile(row["user"]["default_profile"]),
         "notifications" : notifications_on(row["user"]["notifications"]),
-        "is_bot" : is_bot(row["id"], my_bot_results),
+        "is_bot" : is_bot(row["user"]["id"], my_bot_results),
     }
 
     return dict
