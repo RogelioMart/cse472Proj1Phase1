@@ -36,6 +36,16 @@ def bot_results():
     return results
 
 
+# Check if a user is a bot
+def is_bot(id, id_list):
+    bool = False
+
+    if id in id_list:
+        bool = True
+
+    return bool
+
+
 # Returns a list of dict, where the dict is the test results of the ith user
 # Here is a legend for the keys in the dict:
 #   "name"            : contains_name()
@@ -48,6 +58,7 @@ def bot_results():
 #   "friends_int"     : friends_count_interval()
 #   "default"         : is_default_profile()
 #   "notifications"   : notifications_on()
+#   "is_bot"          : is_bot()
 def test_results():
     results = []
 
@@ -59,6 +70,8 @@ def test_results():
 
 # Run the battery of tests
 def run_tests(row):
+    my_bot_results = bot_results()
+
     dict = {
         "name" : contains_name(row["user"]["screen_name"], row["user"]["name"]),
         "bio" : contains_bio(row["user"]["description"]),
@@ -69,7 +82,8 @@ def run_tests(row):
         "verified" : is_verified(row["user"]["verified"]),
         "friends_int" : friends_count_interval(row["user"]["friends_count"]),
         "default" : is_default_profile(row["user"]["default_profile"]),
-        "notifications" : notifications_on(row["user"]["notifications"])
+        "notifications" : notifications_on(row["user"]["notifications"]),
+        "is_bot" : is_bot(row["id"], my_bot_results),
     }
 
     return dict
@@ -184,15 +198,4 @@ def is_default_profile(bool):
 
 
 def notifications_on(bool):
-    return bool
-
-
-## HEY! Don't use these functions until you call run_tests()!
-# Check if a user is a bot
-def is_bot(id):
-    bool = False
-
-    if id in bot_id_list:
-        bool = True
-
     return bool
