@@ -10,7 +10,7 @@ import os
 
 # local modules
 import config
-
+import json
 
 # Constants
 DIR_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -22,6 +22,14 @@ df_js = pd.read_json(BOT_DATASET_JSON_PATH)
 df_tsv = pd.read_csv(BOT_DATASET_CSV_PATH, header = None, delim_whitespace = True)
 #bot_id_list = []  # list of user IDs belonging to confirmed bots
 #test_results_list = []  # list of test results
+'''
+BOT_DATASET_JSON_PATH = DIR_PATH + r"\gilani-2017_tweets.json"
+BOT_DATASET_CSV_PATH = DIR_PATH + r"\gilani-2017.tsv"
+
+# Variables
+df_js = pd.read_json(BOT_DATASET_JSON_PATH)
+df_tsv = pd.read_csv(BOT_DATASET_CSV_PATH, header = None, delim_whitespace = True)
+'''
 
 '''
 how many times did having a profile pic lead to a bot or !bot
@@ -551,11 +559,18 @@ def cnt_perc_num(data_dict, bot_nbot_dict, dict_val):
     
 #GETTING the percentages in naive bayes starts HERE
 '''
+For Botometer
 total: 518
   are bots    are humans
 {'tru': 139, 'fals': 379}
+
+For Gilani
+total: 2494
+
 '''
 naive_data = test_results()
+
+print("\nNaive table dataset is done\n") #DEBUGGING
 
 '''
 for key in naive_data:
@@ -568,7 +583,7 @@ tempy_dict = cnt_is_bot(naive_data)
 over_dict['total_bot_!bot']['bot'] = tempy_dict['tru']
 over_dict['total_bot_!bot']['!bot'] = tempy_dict['fals']
 
-#print(over_dict['total_bot_!bot'])
+print(over_dict['total_bot_!bot'])
 
 tempy_dict.clear()
 
@@ -580,7 +595,7 @@ over_dict['name']['hasName_!bot'] = tempy_dict['!bot_true']
 over_dict['name']['hasntName_bot'] = tempy_dict['bot_false']
 over_dict['name']['hasntName_!bot'] = tempy_dict['!bot_false']
 
-#print(over_dict['name']) #DEBUGGING
+print(over_dict['name']) #DEBUGGING
 
 tempy_dict.clear()
 
@@ -592,7 +607,7 @@ over_dict['bio']['hasBio_!bot'] = tempy_dict['!bot_true']
 over_dict['bio']['hasntBio_bot'] = tempy_dict['bot_false']
 over_dict['bio']['hasntBio_!bot'] = tempy_dict['!bot_false']
 
-#print(over_dict['bio']) #DEBUGGING
+print(over_dict['bio']) #DEBUGGING
 
 tempy_dict.clear()
 
@@ -623,7 +638,7 @@ over_dict['follower_int']['8_!bot'] = tempy_dict['t8_!bot']
 over_dict['follower_int']['9_!bot'] = tempy_dict['t9_!bot']
 
 
-#print(over_dict['follower_int']) #DEBUGGING
+print(over_dict['follower_int']) #DEBUGGING
 
 tempy_dict.clear()
 
@@ -636,7 +651,7 @@ over_dict['min_tweets']['has50tweets_!bot'] = tempy_dict['!bot_true']
 over_dict['min_tweets']['hasnt50tweets_bot'] = tempy_dict['bot_false']
 over_dict['min_tweets']['hasnt50tweets_!bot'] = tempy_dict['!bot_false']
 
-#print(over_dict['min_tweets']) #DEBUGGING
+print(over_dict['min_tweets']) #DEBUGGING
 
 tempy_dict.clear()
 
@@ -648,7 +663,7 @@ over_dict['follower_friend']['hasmorefollower_!bot'] = tempy_dict['!bot_true']
 over_dict['follower_friend']['hasntmorefollower_bot'] = tempy_dict['bot_false']
 over_dict['follower_friend']['hasntmorefollower_!bot'] = tempy_dict['!bot_false']
 
-#print(over_dict['follower_friend']) #DEBUGGING
+print(over_dict['follower_friend']) #DEBUGGING
 
 tempy_dict.clear()
 
@@ -660,12 +675,11 @@ over_dict['contains_bot']['hasbot_!bot'] = tempy_dict['!bot_true']
 over_dict['contains_bot']['hasntbot_bot'] = tempy_dict['bot_false']
 over_dict['contains_bot']['hasntbot_!bot'] = tempy_dict['!bot_false']
 
-#print(over_dict['contains_bot']) #DEBUGGING
+print(over_dict['contains_bot']) #DEBUGGING
 
 tempy_dict.clear()
 
-#Calculates verified column percentages
-#note got a zero for isverified_bot & 1 for isntverified_bot 
+#Calculates verified column percentages 
 tempy_dict = cnt_perc(naive_data, over_dict['total_bot_!bot'], "verified")
 
 over_dict['verified']['isverified_bot'] = tempy_dict['bot_true']
@@ -673,7 +687,7 @@ over_dict['verified']['isverified_!bot'] = tempy_dict['!bot_true']
 over_dict['verified']['isntverified_bot'] = tempy_dict['bot_false']
 over_dict['verified']['isntverified_!bot'] = tempy_dict['!bot_false']
 
-#print(over_dict['verified']) #DEBUGGING
+print(over_dict['verified']) #DEBUGGING
 
 tempy_dict.clear()
 
@@ -704,7 +718,7 @@ over_dict['friends_int']['8_!bot'] = tempy_dict['t8_!bot']
 over_dict['friends_int']['9_!bot'] = tempy_dict['t9_!bot']
 
 
-#print(over_dict['friends_int']) #DEBUGGING
+print(over_dict['friends_int']) #DEBUGGING
 
 tempy_dict.clear()
 
@@ -716,7 +730,7 @@ over_dict['default']['hasdefaultprofile_!bot'] = tempy_dict['!bot_true']
 over_dict['default']['hasntdefaultprofile_bot'] = tempy_dict['bot_false']
 over_dict['default']['hasntdefaultprofile_!bot'] = tempy_dict['!bot_false']
 
-#print(over_dict['default']) #DEBUGGING
+print(over_dict['default']) #DEBUGGING
 
 tempy_dict.clear()
 
@@ -729,79 +743,27 @@ over_dict['notifications']['hasnotifications_!bot'] = tempy_dict['!bot_true']
 over_dict['notifications']['hasntnotifications_bot'] = tempy_dict['bot_false']
 over_dict['notifications']['hasntnotifications_!bot'] = tempy_dict['!bot_false']
 
-#print(over_dict['notifications']) #DEBUGGING
+print(over_dict['notifications']) #DEBUGGING
 
 tempy_dict.clear()
 
-'''
-test_data: type: dictionary
-    new table made only to to test how good our naive bayes algorithm is
-    
-percentages type: dictionary
-    The nested dictionary used to to calculate a bot percentage
-    (The one Rogelio made)
+naive_data.clear()
 
-THE BIG IDEA IS TO TURN THESE INTO FUNCTIONS TO NOT REWRITE SO MUCH CODE
+print("\nNaive table percentages is done\n") #DEBUGGING
 
-'''
-'''
-def naive_classifier(test_data, percentages):
-    
-    is_a_Bot = 0.0
-    
-    is_a_nBot = 0.0
-    
-    for val in test_data:
-        
-        #FOR name
-        if(val.get("name") == True):
-            
-            is_a_Bot = percentages["hasName_bot"]
-            
-            is_a_nBot = percentages["hasName_!bot"]
-        
-        else: #val.get("name") == False
-        
-            is_a_Bot = percentages["hasntName_bot"]
-            
-            is_a_nBot = percentages["hasntName_!bot"]
-            
-        #FOR bio
-        if(val.get("bio") == True):
-        
-            is_a_Bot = percentages["hasBio_bot"]
-            
-            is_a_nBot = percentages["hasBio_!bot"]
-        
-        else: #val.get("bio") == False
-        
-            is_a_Bot = percentages["hasntBio_bot"]
-            
-            is_a_nBot = percentages["hasntBio_!bot"]
-            
-        #FOR follower_int
-        if(val.get("follower_int") == 0):
-            
-            is_a_Bot = percentages["0_bot"]
-            
-            is_a_nBot = percentages["0_!bot"]
-            
-        elif(val.get("follower_int") == 1):
-            
-            is_a_Bot = percentages["1_bot"]
-            
-            is_a_nBot = percentages["1_!bot"]
-            
-        elif(val.get("follower_int") == 2):
-            
-            is_a_Bot = percentages["2_bot"]
-            
-            is_a_nBot = percentages["2_!bot"]
-            
-        #... imagine I wrote the rest
-        
-        else:
-            print("\nERROR in the number perccentage\n")
-'''
+BOT_DATASET_JSON_PATH = DIR_PATH + r"\botometer-feedback-2019_tweets.json"
+BOT_DATASET_CSV_PATH = DIR_PATH + r"\botometer-feedback-2019.tsv"
+
+df_js = pd.read_json(BOT_DATASET_JSON_PATH)
+df_tsv = pd.read_csv(BOT_DATASET_CSV_PATH, header = None, delim_whitespace = True)
+
+
+#print("\nBegin getting values for precision and recall tests\n") #DEBUGGING
+
+#naive_data = test_results()
+
+
+#print("\nDone with the the P&R dictionary now counting\n")
+
 
 
